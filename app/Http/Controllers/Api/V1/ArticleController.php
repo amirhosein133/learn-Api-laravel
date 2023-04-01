@@ -12,6 +12,12 @@ use Illuminate\Http\Response;
 
 class ArticleController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['except' => ['index' , 'show']]);
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -29,7 +35,7 @@ class ArticleController extends Controller
     {
         $this->validation($request);
         Article::create([
-            'user_id' => 1,
+            'user_id' => auth('api')->user()->id,
             'title' => $request->title,
             'description' => $request->description,
             'image' => $request->image

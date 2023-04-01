@@ -14,6 +14,12 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-Route::group(['prefix' => 'v1'] , function (){
-   Route::resource('articles' , ArticleController::class);
+Route::group(['prefix' => 'v1'], function () {
+    Route::group(['prefix' => 'auth'], function ($router) {
+        Route::post('login', [\App\Http\Controllers\Api\V1\AuthController::class, 'login']);
+        Route::post('logout', [\App\Http\Controllers\Api\V1\AuthController::class, 'logout']);
+        Route::post('refresh', [\App\Http\Controllers\Api\V1\AuthController::class, 'refresh']);
+        Route::post('me', [\App\Http\Controllers\Api\V1\AuthController::class, 'me']);
+    });
+    Route::resource('articles', ArticleController::class);
 });
