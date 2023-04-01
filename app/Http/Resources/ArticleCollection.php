@@ -17,7 +17,9 @@ class ArticleCollection extends ResourceCollection
       return [
         'data' => ArticleResource::collection($this->collection),  //$this->>collection == $articles
         'meta' => [
-            'count' => count($this->collection)
+            'count' => $this->total(),
+            'total_page' => $this->lastPage(), // tavajoh be sintax => in postman lastPage => last_page
+            'current_page' => $this->currentPage(), // tavajoh be sintax => in postman currentPage => current_page
         ]
       ];
     }
