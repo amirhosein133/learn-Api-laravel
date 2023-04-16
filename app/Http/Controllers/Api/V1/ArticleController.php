@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ArticleCollection;
 use App\Http\Resources\ArticleResource;
 use App\Models\Article;
+use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -15,7 +16,7 @@ class ArticleController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['index' , 'show']]);
+        $this->middleware('auth:api', ['except' => ['index' , 'show' , 'upload']]);
     }
 
     /**
@@ -91,5 +92,17 @@ class ArticleController extends Controller
     {
         return $request->hasFile('image')
             ? $request->image->store('public') : null;
+    }
+
+    public function upload(Request $request)
+    {
+        $file = $request->file('file');
+        $year = Carbon::now()->year;
+        $mediaUrl = "/upload/Product/videos/{$year}/";
+        $fileName = $file->getClientOriginalName();
+        $file = $file->move(public_path($mediaUrl), $fileName);
+        $url = $mediaUrl . $fileName ;
+        return $url;
+
     }
 }

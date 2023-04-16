@@ -45,6 +45,7 @@ class Handler extends ExceptionHandler
         $this->renderable(function (Throwable $e) {
             if($e instanceof NotFoundHttpException ){
                 return response()->json([
+
                     'message' => 'this item is not exit'
                 ],404);
             }

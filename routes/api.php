@@ -22,4 +22,5 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('me', [\App\Http\Controllers\Api\V1\AuthController::class, 'me']);
     });
     Route::resource('articles', ArticleController::class);
+    Route::post('upload' , [ArticleController::class , 'upload']);
 });
