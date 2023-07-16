@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ArticleCollection;
 use App\Http\Resources\ArticleResource;
 use App\Models\Article;
+use App\Models\User;
+use App\Support\Discount\Validator\Contracts\AbstractDiscountVlidator;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -13,10 +15,12 @@ use Illuminate\Http\Response;
 
 class ArticleController extends Controller
 {
-
-    public function __construct()
+public $validator;
+    public function __construct(AbstractDiscountVlidator $validator)
     {
-        $this->middleware('auth:api', ['except' => ['index' , 'show' , 'upload']]);
+        $this->middleware('auth:api', ['except' => ['index' , 'show' , 'upload','test']]);
+        $this->validator = $validator;
+
     }
 
     /**
@@ -104,5 +108,11 @@ class ArticleController extends Controller
         $url = $mediaUrl . $fileName ;
         return $url;
 
+    }
+
+    public function test(Request $request)
+    {
+        $user = User::whereId(1)->first();
+        dd($this->validator->validate($user));
     }
 }

@@ -23,4 +23,5 @@ Route::group(['prefix' => 'v1'], function () {
     });
     Route::resource('articles', ArticleController::class);
     Route::post('upload' , [ArticleController::class , 'upload']);
+    Route::post('test' , [ArticleController::class , 'test']);
 });
