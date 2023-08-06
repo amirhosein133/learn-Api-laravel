@@ -45,11 +45,36 @@ class CartService
             ? $this->cart->where('subject_id' , $key->id)->where('subject_type' , get_class($key))->first()
             : $this->cart->where('id' , $key)->first();
 
-        return $item;
+        return $this->withReleationShipIfExits($item);
     }
 
     public function all()
     {
-        return $this->cart;
+        $cart = $this->cart;
+        $cart = $cart->map(function ($item) {
+            return $this->withReleationShipIfExits($item);
+        });
+
+        return $cart;
+
+    }
+
+    /**
+     * @param $item
+     * @return void
+     *  در این قسمت ما میخوایم برای محصول و کارت یک رابطه به وجود بیاریم
+     */
+    protected function withReleationShipIfExits( $item)
+    {
+        if(isset($item['subject_id']) && isset($item['subject_type']))
+        {
+            $class = $item['subject_type'];
+            $subject = (new $class())->find($item['subject_id']);
+            $item[strtolower(class_basename($class))] = $subject;
+            unset($item['subject_id']);
+            unset($item['subject_type']);
+            return $item;
+        }
+        return $item;
     }
 }

@@ -11,6 +11,7 @@ class CartController extends Controller
 {
     public function addToCart(Article $article)
     {
+        return cart::all();
         if (!cart::has($article)) {
             Cart::put([
                 'quantity' => 1,
