@@ -27,5 +27,6 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('cart', function () {
         return cart::get(2);
     });
-    Route::post('cart/add/{article}', [\App\Http\Controllers\Api\V1\CartController::class, 'addToCart']);
+    Route::post('cart/add/{article}', [\App\Http\Controllers\Api\V1\CartController::class, 'addToCart'])->middleware('api-session');
+    Route::delete('cart/delete/{article}' , [\App\Http\Controllers\Api\V1\CartController::class , 'deleteFromCart'])->middleware('api-session');
 });
