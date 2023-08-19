@@ -21,4 +21,9 @@ class Order extends Model
     {
         return $this->belongsToMany(Article::class);   // برای پیگیری هر سفارش باید بدانیم هر محصول در کدام اوردر بوده
     }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
 }
