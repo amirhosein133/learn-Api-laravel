@@ -82,9 +82,9 @@ class CartService
     {
 
         if ($this->has($key)) {
-            $this->cart = $this->cart->filter(function ( $item) use ($key) {  // بر اساس نتیجه شروط (درست بودن یا نبودن )موارد را به کالکشن جدید اضافه میکند . اگر شروط صحیح باشد اضافه میشود و برعکس .
+            $this->cart = $this->cart->filter(function ($item) use ($key) {  // بر اساس نتیجه شروط (درست بودن یا نبودن )موارد را به کالکشن جدید اضافه میکند . اگر شروط صحیح باشد اضافه میشود و برعکس .
                 if ($key instanceof Model) {
-                    return (($item['subject_id'] != $key->id) );
+                    return (($item['subject_id'] != $key->id));
                 }
                 return $key != $item['id'];
             });
@@ -102,6 +102,7 @@ class CartService
      */
     protected function withReleationShipIfExits($item)
     {
+
         if (isset($item['subject_id']) && isset($item['subject_type'])) {
             $class = $item['subject_type'];
             $subject = (new $class())->find($item['subject_id']);
@@ -110,5 +111,12 @@ class CartService
             unset($item['subject_type']);
         }
         return $item;
+    }
+
+    public function instance(string $name)
+    {
+        $this->cart = \session()->get($name) ?? collect([]);
+        $this->name = $name;
+        return $this;
     }
 }
